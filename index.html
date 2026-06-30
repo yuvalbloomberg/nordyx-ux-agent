@@ -207,6 +207,13 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-section">
+      <h3>API Key</h3>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;color:var(--t);font-size:12px;outline:none;margin-bottom:6px">
+      <button class="btn" style="width:100%;padding:6px" onclick="saveKey()">Save key</button>
+      <div style="font-size:10px;color:var(--t3);margin-top:6px">Stored in your browser only. Sent only to api.anthropic.com.</div>
+    </div>
+
+    <div class="sidebar-section">
       <h3>Merchant Persona</h3>
       <div class="persona-card">
         <div class="persona-name">Sarah M.</div>
@@ -292,6 +299,18 @@ let currentImageBase64 = null;
 let allFindings = [];
 let screenCount = 0;
 
+function saveKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (key) { localStorage.setItem('nx-ux-key', key); }
+}
+function getKey() {
+  return document.getElementById('apiKeyInput').value.trim() || localStorage.getItem('nx-ux-key') || '';
+}
+(function initKey(){
+  const saved = localStorage.getItem('nx-ux-key');
+  if (saved) document.getElementById('apiKeyInput').value = saved;
+})();
+
 const fileInput = document.getElementById('fileInput');
 const uploadArea = document.getElementById('uploadArea');
 const analyzeBtn = document.getElementById('analyzeBtn');
@@ -344,9 +363,16 @@ async function analyze() {
   output.innerHTML = '<div class="streaming">Sarah is reviewing this screen...</div>';
 
   try {
+    const apiKey = getKey();
+    if (!apiKey) { output.innerHTML = '<div style="color:var(--red);font-size:12px">Please enter your API key in the sidebar first.</div>'; analyzeBtn.disabled = false; analyzeBtn.textContent = 'Analyze screen'; return; }
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 1000,
@@ -484,9 +510,16 @@ Write a developer action list with this exact structure:
 Be specific and actionable. Each item should say exactly what the developer needs to do, not just what the problem is. Use plain English, no jargon.`;
 
   try {
+    const apiKey = getKey();
+    if (!apiKey) { alert('Please enter your API key in the sidebar first.'); summaryBtn.disabled = false; summaryBtn.textContent = 'Generate dev report'; return; }
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 1000,

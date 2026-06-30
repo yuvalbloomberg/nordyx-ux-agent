@@ -121,7 +121,7 @@
 <body>
 
 <div class="header">
-  <div class="logo">Nordyx UX Agent <span style="color:var(--t3);font-weight:400;font-size:11px">v1.4</span></div>
+  <div class="logo">Nordyx UX Agent <span style="color:var(--t3);font-weight:400;font-size:11px">v1.5</span></div>
   <div class="badge" id="personaBadge">Sarah M. persona</div>
   <div style="margin-left:auto;font-size:11px;color:var(--t3)">Upload a dashboard screenshot → get a merchant-eye review</div>
 </div>
@@ -132,7 +132,7 @@
       <h3>Worker URL</h3>
       <input type="text" id="workerUrlInput" placeholder="https://your-worker.workers.dev" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;color:var(--t);font-size:12px;outline:none;margin-bottom:6px">
       <button class="btn" style="width:100%;padding:6px" onclick="saveWorkerUrl()">Save</button>
-      <div style="font-size:10px;color:var(--t3);margin-top:6px">No API key needed here — the key lives securely in your Cloudflare Worker.</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:6px">Pre-filled with the default Worker. No API key needed here — the key lives securely in the Cloudflare Worker.</div>
     </div>
 
     <div class="sidebar-section">
@@ -283,12 +283,14 @@ let allFindings = [];
 let screenCount = 0;
 let viewingSavedScreen = null;
 
+const DEFAULT_WORKER_URL = 'https://nordyx-ux-agent.yuvalbloomberg.workers.dev';
+
 function saveWorkerUrl() {
   const url = document.getElementById('workerUrlInput').value.trim();
   if (url) { localStorage.setItem('nx-ux-worker-url', url); }
 }
 function getWorkerUrl() {
-  return document.getElementById('workerUrlInput').value.trim() || localStorage.getItem('nx-ux-worker-url') || '';
+  return document.getElementById('workerUrlInput').value.trim() || localStorage.getItem('nx-ux-worker-url') || DEFAULT_WORKER_URL;
 }
 
 function persistFindings() {
@@ -328,7 +330,7 @@ const exportStats = document.getElementById('exportStats');
 
 (function init(){
   const saved = localStorage.getItem('nx-ux-worker-url');
-  if (saved) document.getElementById('workerUrlInput').value = saved;
+  document.getElementById('workerUrlInput').value = saved || DEFAULT_WORKER_URL;
   loadFindings();
   populatePersonaSelect();
   renderSidebar();

@@ -398,7 +398,13 @@ async function analyze() {
 
     let findings;
     try {
-      const clean = raw.replace(/```json|```/g, '').trim();
+      let clean = raw.replace(/```json/g, '').replace(/```/g, '').trim();
+      // Extract just the JSON array if there's extra text around it
+      const arrStart = clean.indexOf('[');
+      const arrEnd = clean.lastIndexOf(']');
+      if (arrStart !== -1 && arrEnd !== -1) {
+        clean = clean.substring(arrStart, arrEnd + 1);
+      }
       findings = JSON.parse(clean);
     } catch(e) {
       output.innerHTML = '<div style="color:var(--red);font-size:12px">Parse error. Raw response:<br><pre style="font-size:11px;color:var(--t2);white-space:pre-wrap">' + raw + '</pre></div>';

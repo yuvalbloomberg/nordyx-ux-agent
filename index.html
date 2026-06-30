@@ -171,6 +171,7 @@
         <input type="text" class="screen-input" id="screenLabel" placeholder="Screen name (e.g. Overview, Architect, Capabilities)...">
         <button class="btn" id="analyzeBtn" disabled onclick="analyze()">Analyze screen</button>
         <button class="btn btn-ghost" onclick="newScreen()">New screen</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('fileInput').click()">📁 Upload image</button>
       </div>
 
       <div class="analysis-output" id="output">
@@ -314,15 +315,6 @@ function clearAllHistory() {
   newScreen();
 }
 
-(function init(){
-  const saved = localStorage.getItem('nx-ux-key');
-  if (saved) document.getElementById('apiKeyInput').value = saved;
-  loadFindings();
-  populatePersonaSelect();
-  renderSidebar();
-  updateStats();
-})();
-
 const fileInput = document.getElementById('fileInput');
 const uploadArea = document.getElementById('uploadArea');
 const analyzeBtn = document.getElementById('analyzeBtn');
@@ -333,6 +325,16 @@ const previewLabel = document.getElementById('previewLabel');
 const screenLabel = document.getElementById('screenLabel');
 const findingsList = document.getElementById('findingsList');
 const exportStats = document.getElementById('exportStats');
+
+(function init(){
+  const saved = localStorage.getItem('nx-ux-key');
+  if (saved) document.getElementById('apiKeyInput').value = saved;
+  loadFindings();
+  populatePersonaSelect();
+  renderSidebar();
+  updateStats();
+})();
+
 
 fileInput.addEventListener('change', function(e) {
   const file = e.target.files[0];
@@ -349,6 +351,26 @@ uploadArea.addEventListener('drop', function(e) {
   uploadArea.classList.remove('drag');
   const file = e.dataTransfer.files[0];
   if (file) loadFile(file);
+});
+
+/* Global drag & drop fallback: works even when uploadArea is hidden
+   (e.g. while viewing a saved screen from the sidebar). Dropping a
+   file anywhere in the main panel will switch back to upload mode. */
+const mainPanel = document.querySelector('.main');
+mainPanel.addEventListener('dragover', function(e) {
+  e.preventDefault();
+  if (uploadArea.style.display === 'none') uploadArea.classList.add('drag');
+});
+mainPanel.addEventListener('dragleave', function() {
+  uploadArea.classList.remove('drag');
+});
+mainPanel.addEventListener('drop', function(e) {
+  e.preventDefault();
+  uploadArea.classList.remove('drag');
+  const file = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (!file) return;
+  if (uploadArea.style.display === 'none') newScreen();
+  loadFile(file);
 });
 
 function loadFile(file) {

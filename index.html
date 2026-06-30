@@ -7,219 +7,140 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #0f0f11;
-    --bg2: #18181c;
-    --bg3: #222228;
-    --border: #2e2e38;
-    --acc: #7c6ef7;
-    --acc2: #a89cf7;
-    --t: #f0f0f4;
-    --t2: #9898a8;
-    --t3: #5a5a70;
-    --red: #f87171;
-    --yellow: #fbbf24;
-    --green: #4ade80;
-    --orange: #fb923c;
+    --bg: #ffffff;
+    --bg2: #f6f6f9;
+    --bg3: #eeeef3;
+    --border: #dcdce4;
+    --acc: #6d28d9;
+    --acc2: #5b21b6;
+    --acc-soft: #efe9fd;
+    --t: #16161c;
+    --t2: #45454f;
+    --t3: #7a7a87;
+    --red: #c81e3a;
+    --yellow: #b3650a;
+    --green: #157f3c;
     --r: 8px;
   }
   body { background: var(--bg); color: var(--t); font-family: 'Inter', system-ui, sans-serif; font-size: 14px; min-height: 100vh; }
 
-  .header {
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+  .header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
   .logo { font-size: 15px; font-weight: 700; color: var(--acc2); letter-spacing: -.3px; }
   .badge { background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 11px; color: var(--t2); }
 
-  .layout { display: grid; grid-template-columns: 280px 1fr; height: calc(100vh - 49px); }
+  .layout { display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 49px); }
 
-  /* SIDEBAR */
-  .sidebar {
-    background: var(--bg2);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  .sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
   .sidebar-section { padding: 16px; border-bottom: 1px solid var(--border); }
-  .sidebar-section h3 { font-size: 11px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+  .sidebar-section h3 { font-size: 11px; font-weight: 700; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
 
-  .persona-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 12px;
-  }
-  .persona-name { font-weight: 600; font-size: 13px; color: var(--t); margin-bottom: 4px; }
-  .persona-detail { font-size: 11px; color: var(--t2); line-height: 1.5; }
+  select.persona-select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 8px 10px; color: var(--t); font-size: 13px; font-weight: 600; margin-bottom: 10px; outline: none; cursor: pointer; }
+  select.persona-select:focus { border-color: var(--acc); }
+
+  .persona-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 12px; }
+  .persona-name { font-weight: 700; font-size: 13px; color: var(--t); margin-bottom: 4px; }
+  .persona-detail { font-size: 11.5px; color: var(--t2); line-height: 1.5; }
 
   .findings-list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-  .finding {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 10px 12px;
-    cursor: pointer;
-    transition: border-color .15s;
-  }
-  .finding:hover { border-color: var(--acc); }
+  .finding { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+  .finding:hover { border-color: var(--acc); box-shadow: 0 0 0 2px var(--acc-soft); }
   .finding-sev { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
   .sev-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .sev-critical .sev-dot { background: var(--red); }
   .sev-medium .sev-dot { background: var(--yellow); }
   .sev-low .sev-dot { background: var(--green); }
-  .sev-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; }
+  .sev-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
   .sev-critical .sev-label { color: var(--red); }
   .sev-medium .sev-label { color: var(--yellow); }
   .sev-low .sev-label { color: var(--green); }
-  .finding-title { font-size: 12px; color: var(--t); line-height: 1.4; }
-  .finding-screen { font-size: 11px; color: var(--t3); margin-top: 3px; }
+  .finding-title { font-size: 12.5px; color: var(--t); line-height: 1.4; font-weight: 500; }
+  .finding-meta { font-size: 10.5px; color: var(--t3); margin-top: 3px; display: flex; gap: 6px; }
 
-  /* MAIN */
+  .clear-history-btn { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--t3); border-radius: var(--r); padding: 7px; font-size: 11px; cursor: pointer; margin-top: 8px; }
+  .clear-history-btn:hover { color: var(--red); border-color: var(--red); }
+
   .main { display: flex; flex-direction: column; overflow: hidden; }
 
-  .upload-area {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 12px;
-    border: 2px dashed var(--border);
-    margin: 20px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: border-color .2s;
-    position: relative;
-  }
+  .upload-area { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; border: 2px dashed var(--border); margin: 20px; border-radius: 12px; cursor: pointer; transition: border-color .2s; position: relative; background: var(--bg2); }
   .upload-area:hover, .upload-area.drag { border-color: var(--acc); }
   .upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .upload-icon { font-size: 32px; opacity: .4; }
   .upload-label { font-size: 14px; color: var(--t2); }
   .upload-sub { font-size: 12px; color: var(--t3); }
 
-  .preview-wrap {
-    margin: 20px 20px 0;
-    flex-shrink: 0;
-  }
+  .preview-wrap { margin: 20px 20px 0; flex-shrink: 0; }
   .preview-img { width: 100%; max-height: 220px; object-fit: cover; object-position: top; border-radius: var(--r); border: 1px solid var(--border); display: block; }
   .preview-label { font-size: 11px; color: var(--t3); margin-top: 6px; }
 
   .analysis-panel { padding: 16px 20px 20px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
 
   .screen-label-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .screen-input {
-    flex: 1;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 8px 12px;
-    color: var(--t);
-    font-size: 13px;
-    outline: none;
-    min-width: 0;
-  }
+  .screen-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 8px 12px; color: var(--t); font-size: 13px; outline: none; min-width: 0; }
   .screen-input:focus { border-color: var(--acc); }
   .screen-input::placeholder { color: var(--t3); }
 
-  .btn {
-    background: var(--acc);
-    color: white;
-    border: none;
-    border-radius: var(--r);
-    padding: 8px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: opacity .15s;
-  }
+  .btn { background: var(--acc); color: white; border: none; border-radius: var(--r); padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity .15s; }
   .btn:hover { opacity: .85; }
   .btn:disabled { opacity: .4; cursor: not-allowed; }
-  .btn-ghost {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--t2);
-  }
+  .btn-ghost { background: var(--bg); border: 1px solid var(--border); color: var(--t2); }
 
-  .analysis-output {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 16px;
-    flex: 1;
-    min-height: 200px;
-  }
+  .analysis-output { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; flex: 1; min-height: 200px; }
   .analysis-output.empty { display: flex; align-items: center; justify-content: center; color: var(--t3); font-size: 13px; }
 
-  .finding-block {
-    border-radius: 6px;
-    padding: 10px 12px;
-    margin-bottom: 8px;
-    border-left: 3px solid transparent;
-  }
-  .finding-block.critical { background: rgba(248,113,113,.08); border-color: var(--red); }
-  .finding-block.medium { background: rgba(251,191,36,.08); border-color: var(--yellow); }
-  .finding-block.low { background: rgba(74,222,128,.08); border-color: var(--green); }
-  .finding-block .fb-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+  .finding-block { background: var(--bg); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; border-left: 3px solid transparent; border: 1px solid var(--border); }
+  .finding-block.critical { border-left-color: var(--red); }
+  .finding-block.medium { border-left-color: var(--yellow); }
+  .finding-block.low { border-left-color: var(--green); }
+  .finding-block .fb-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
   .finding-block.critical .fb-type { color: var(--red); }
   .finding-block.medium .fb-type { color: var(--yellow); }
   .finding-block.low .fb-type { color: var(--green); }
-  .finding-block .fb-title { font-size: 13px; font-weight: 600; color: var(--t); margin-bottom: 3px; }
-  .finding-block .fb-detail { font-size: 12px; color: var(--t2); line-height: 1.5; }
-  .finding-block .fb-reaction { font-size: 12px; color: var(--acc2); margin-top: 4px; font-style: italic; }
+  .finding-block .fb-title { font-size: 13.5px; font-weight: 700; color: var(--t); margin-bottom: 4px; }
+  .finding-block .fb-detail { font-size: 12.5px; color: var(--t2); line-height: 1.5; }
+  .finding-block .fb-reaction { font-size: 12px; color: var(--acc2); margin-top: 6px; font-style: italic; }
+  .finding-block .fb-suggestion { font-size: 12px; color: var(--t); margin-top: 8px; background: var(--acc-soft); border-radius: 6px; padding: 7px 10px; line-height: 1.5; }
+  .finding-block .fb-suggestion b { color: var(--acc2); font-weight: 700; }
 
   .streaming { color: var(--t2); font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
 
-  .export-bar {
-    padding: 12px 20px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    background: var(--bg2);
-    flex-shrink: 0;
-  }
+  .export-bar { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; background: var(--bg2); flex-shrink: 0; }
   .export-stats { flex: 1; font-size: 12px; color: var(--t2); }
   .export-stats strong { color: var(--t); }
 
-  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--acc); border-radius: 50%; animation: spin .7s linear infinite; }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .empty-findings { padding: 16px; text-align: center; color: var(--t3); font-size: 12px; }
 
-  .section-title { font-size: 11px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; padding: 10px 16px 4px; }
+  .section-title { font-size: 11px; font-weight: 700; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; padding: 10px 16px 4px; }
+
+  .viewing-banner { background: var(--acc-soft); color: var(--acc2); font-size: 11.5px; font-weight: 600; padding: 8px 12px; border-radius: var(--r); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .viewing-banner button { background: none; border: none; color: var(--acc2); font-size: 11px; cursor: pointer; text-decoration: underline; font-weight: 600; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="logo">Nordyx UX Agent <span style="color:var(--t3);font-weight:400;font-size:11px">v1.2</span></div>
-  <div class="badge">Non-technical merchant persona</div>
+  <div class="logo">Nordyx UX Agent <span style="color:var(--t3);font-weight:400;font-size:11px">v1.3</span></div>
+  <div class="badge" id="personaBadge">Sarah M. persona</div>
   <div style="margin-left:auto;font-size:11px;color:var(--t3)">Upload a dashboard screenshot → get a merchant-eye review</div>
 </div>
 
 <div class="layout">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-section">
       <h3>API Key</h3>
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;color:var(--t);font-size:12px;outline:none;margin-bottom:6px">
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;color:var(--t);font-size:12px;outline:none;margin-bottom:6px">
       <button class="btn" style="width:100%;padding:6px" onclick="saveKey()">Save key</button>
       <div style="font-size:10px;color:var(--t3);margin-top:6px">Stored in your browser only. Sent only to api.anthropic.com.</div>
     </div>
 
     <div class="sidebar-section">
       <h3>Merchant Persona</h3>
+      <select class="persona-select" id="personaSelect" onchange="switchPersona()"></select>
       <div class="persona-card">
-        <div class="persona-name">Sarah M.</div>
-        <div class="persona-detail">
-          Runs a candles & home goods Shopify store. 5 years in business, mostly brick-and-mortar. Just moved online. No developer on the team. Uses Canva, not code. Knows Shopify but not app ecosystems. Expects things to "just work."
-        </div>
+        <div class="persona-name" id="personaName"></div>
+        <div class="persona-detail" id="personaDetail"></div>
       </div>
     </div>
 
@@ -227,9 +148,11 @@
     <div class="findings-list" id="findingsList">
       <div class="empty-findings">No findings yet. Upload a screenshot to begin.</div>
     </div>
+    <div style="padding:0 12px 12px">
+      <button class="clear-history-btn" onclick="clearAllHistory()">Clear all saved history</button>
+    </div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
     <div id="previewSection" style="display:none" class="preview-wrap">
       <img id="previewImg" class="preview-img" src="" alt="Screenshot">
@@ -247,11 +170,11 @@
       <div class="screen-label-row">
         <input type="text" class="screen-input" id="screenLabel" placeholder="Screen name (e.g. Overview, Architect, Capabilities)...">
         <button class="btn" id="analyzeBtn" disabled onclick="analyze()">Analyze screen</button>
-        <button class="btn btn-ghost" onclick="reset()">Clear</button>
+        <button class="btn btn-ghost" onclick="newScreen()">New screen</button>
       </div>
 
       <div class="analysis-output" id="output">
-        <div style="color:var(--t3);font-size:13px">Upload a screenshot and click Analyze. Sarah will review it as a first-time merchant.</div>
+        <div style="color:var(--t3);font-size:13px">Upload a screenshot and click Analyze. The selected persona will review it. All past analyses are saved automatically — click any item in the sidebar to revisit it.</div>
       </div>
     </div>
 
@@ -264,23 +187,53 @@
 </div>
 
 <script>
-const PERSONA = `You are Sarah M., a non-technical Shopify merchant who runs a candles and home goods store. You have been using Shopify for 2 years but have no developer. You just installed a new platform called Nordyx that promises to manage your entire store experience from one place.
+const PERSONAS = {
+  sarah: {
+    name: 'Sarah M.',
+    detail: 'Runs a candles & home goods Shopify store. 5 years in business, mostly brick-and-mortar. Just moved online. No developer on the team. Uses Canva, not code. Knows Shopify but not app ecosystems. Expects things to "just work."',
+    system: `You are Sarah M., a non-technical Shopify merchant who runs a candles and home goods store. You have been using Shopify for 2 years but have no developer. You just installed a new platform called Nordyx that promises to manage your entire store experience from one place.
 
-You are seeing this dashboard screen for the first time. You are NOT an expert in SaaS products. You get confused by technical jargon. You expect things to be self-explanatory. You have limited patience for things that don't make sense immediately.
+You are seeing this dashboard screen for the first time. You are NOT an expert in SaaS products. You get confused by technical jargon. You expect things to be self-explanatory. You have limited patience for things that don't make sense immediately.`
+  },
+  david: {
+    name: 'David K.',
+    detail: 'Runs a Shopify dev/marketing agency managing 12 client stores. Technically capable, impatient with hand-holding, expects power-user features (bulk actions, API access, keyboard shortcuts). Annoyed by anything that wastes his time.',
+    system: `You are David K., an experienced Shopify agency owner who manages 12 client stores. You are technically skilled — you know HTML/CSS, Liquid, and have used dozens of Shopify apps. You just installed Nordyx to evaluate it for your agency's toolkit.
 
-Analyze the screenshot from YOUR perspective as Sarah. Report exactly what you see, what confuses you, what worries you, and what you would do next.
+You expect efficiency: bulk actions, clear API/webhook access, keyboard shortcuts, and no unnecessary friction. You get irritated by hand-holding, marketing fluff, or anything that slows down a power user. You are evaluating whether this tool is worth rolling out across your client base.`
+  },
+  noa: {
+    name: 'Noa L.',
+    detail: 'Solo founder of a small jewelry brand. Runs her entire business from her phone — no laptop. Always multitasking, low patience, easily distracted. If something takes more than a few taps to understand, she gives up.',
+    system: `You are Noa L., a solo founder running a small handmade jewelry brand entirely from her phone. You do not own a laptop and manage your store, social media, and orders all from a mobile device, usually between customers or while doing something else.
+
+You have very low patience. If a screen is not immediately clear on a small screen, with large enough tap targets and short text, you get frustrated and consider abandoning the task. You are evaluating this screenshot as if you were viewing it on your phone.`
+  },
+  ravi: {
+    name: 'Ravi P.',
+    detail: 'Evaluating Nordyx on behalf of a mid-size DTC brand before committing budget. Skeptical, cost- and risk-focused. Compares everything to competitors. Looks for hidden risk, lock-in, and unclear pricing or permissions.',
+    system: `You are Ravi P., an operations lead at a mid-size DTC brand evaluating Nordyx before recommending it to leadership. You are skeptical by nature and comparing this product to 2-3 competitor platforms you have already trialed.
+
+You focus on risk: vendor lock-in, unclear permissions, hidden costs, data ownership, and anything that looks unfinished or untrustworthy. You are not easily impressed by visuals — you look for substance and clarity about what the product actually does.`
+  }
+};
+
+const PERSONA_PROMPT_SUFFIX = `
+
+Analyze the screenshot from YOUR perspective, in character. Report exactly what you see, what confuses you, what worries you, and what you would do next.
 
 Return a JSON array of findings. Each finding must have:
 - severity: "critical" | "medium" | "low"
 - category: "bug" | "confusion" | "friction" | "gap" | "positive"
 - title: short title (max 8 words)
-- detail: what Sarah sees or experiences (1-2 sentences, in Sarah's voice — first person)
-- reaction: what Sarah would actually do or think ("I would...", "I'm worried that...", "I don't understand...")
+- detail: what you see or experience (1-2 sentences, in your voice — first person)
+- reaction: what you would actually do or think ("I would...", "I'm worried that...", "I don't understand...")
+- suggestion: a concrete, specific UI/UX change that would fix this (1 short sentence, plain language, actionable — e.g. "Rename the button to 'Save Changes' and disable it until a rule name is entered.")
 
 Severity guide:
-- critical: Sarah would stop using the product or call support
-- medium: Sarah is confused but would try to continue
-- low: Minor friction or a positive note
+- critical: you would stop using the product or contact support
+- medium: you are confused but would try to continue
+- low: minor friction or a positive note
 
 Return ONLY valid JSON array. No markdown, no explanation outside the array.
 
@@ -291,13 +244,43 @@ Example:
     "category": "confusion",
     "title": "26 identical rule names",
     "detail": "I see 26 rules all named the exact same thing. I don't know what any of them do.",
-    "reaction": "I'm worried I broke something. Did I create duplicates? Should I delete them?"
+    "reaction": "I'm worried I broke something. Did I create duplicates? Should I delete them?",
+    "suggestion": "Auto-generate a unique, readable rule name from its condition (e.g. 'Free shipping over $50') instead of leaving them all blank or identical."
   }
 ]`;
+
+let currentPersonaKey = localStorage.getItem('nx-ux-persona') || 'sarah';
+if (!PERSONAS[currentPersonaKey]) currentPersonaKey = 'sarah';
+
+function getPersonaSystemPrompt(key) {
+  return PERSONAS[key].system + PERSONA_PROMPT_SUFFIX;
+}
+
+function populatePersonaSelect() {
+  const sel = document.getElementById('personaSelect');
+  sel.innerHTML = Object.keys(PERSONAS).map(k =>
+    `<option value="${k}" ${k===currentPersonaKey?'selected':''}>${PERSONAS[k].name}</option>`
+  ).join('');
+  renderPersonaCard();
+}
+
+function renderPersonaCard() {
+  const p = PERSONAS[currentPersonaKey];
+  document.getElementById('personaName').textContent = p.name;
+  document.getElementById('personaDetail').textContent = p.detail;
+  document.getElementById('personaBadge').textContent = p.name + ' persona';
+}
+
+function switchPersona() {
+  currentPersonaKey = document.getElementById('personaSelect').value;
+  localStorage.setItem('nx-ux-persona', currentPersonaKey);
+  renderPersonaCard();
+}
 
 let currentImageBase64 = null;
 let allFindings = [];
 let screenCount = 0;
+let viewingSavedScreen = null;
 
 function saveKey() {
   const key = document.getElementById('apiKeyInput').value.trim();
@@ -306,9 +289,38 @@ function saveKey() {
 function getKey() {
   return document.getElementById('apiKeyInput').value.trim() || localStorage.getItem('nx-ux-key') || '';
 }
-(function initKey(){
+
+function persistFindings() {
+  localStorage.setItem('nx-ux-findings', JSON.stringify(allFindings));
+  localStorage.setItem('nx-ux-screenCount', String(screenCount));
+}
+
+function loadFindings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('nx-ux-findings') || '[]');
+    if (Array.isArray(saved)) allFindings = saved;
+    screenCount = parseInt(localStorage.getItem('nx-ux-screenCount') || '0', 10) || 0;
+  } catch(e) { allFindings = []; screenCount = 0; }
+}
+
+function clearAllHistory() {
+  if (!confirm('This will permanently delete all saved findings and screen history. Continue?')) return;
+  allFindings = [];
+  screenCount = 0;
+  localStorage.removeItem('nx-ux-findings');
+  localStorage.removeItem('nx-ux-screenCount');
+  renderSidebar();
+  updateStats();
+  newScreen();
+}
+
+(function init(){
   const saved = localStorage.getItem('nx-ux-key');
   if (saved) document.getElementById('apiKeyInput').value = saved;
+  loadFindings();
+  populatePersonaSelect();
+  renderSidebar();
+  updateStats();
 })();
 
 const fileInput = document.getElementById('fileInput');
@@ -340,6 +352,7 @@ uploadArea.addEventListener('drop', function(e) {
 });
 
 function loadFile(file) {
+  viewingSavedScreen = null;
   const reader = new FileReader();
   reader.onload = function(ev) {
     const dataUrl = ev.target.result;
@@ -349,18 +362,20 @@ function loadFile(file) {
     uploadArea.style.display = 'none';
     previewLabel.textContent = file.name + ' (' + Math.round(file.size/1024) + ' KB)';
     analyzeBtn.disabled = false;
-    output.innerHTML = '<div style="color:var(--t3);font-size:13px">Ready. Click Analyze to get Sarah\'s review.</div>';
+    output.innerHTML = '<div style="color:var(--t3);font-size:13px">Ready. Click Analyze to get ' + PERSONAS[currentPersonaKey].name + "'s review.</div>";
   };
   reader.readAsDataURL(file);
 }
 
 async function analyze() {
   if (!currentImageBase64) return;
+  viewingSavedScreen = null;
   analyzeBtn.disabled = true;
   analyzeBtn.innerHTML = '<span class="spinner"></span>';
   const screen = screenLabel.value || ('Screen ' + (screenCount+1));
+  const personaKey = currentPersonaKey;
 
-  output.innerHTML = '<div class="streaming">Sarah is reviewing this screen...</div>';
+  output.innerHTML = '<div class="streaming">' + PERSONAS[personaKey].name + ' is reviewing this screen...</div>';
 
   try {
     const apiKey = getKey();
@@ -376,18 +391,12 @@ async function analyze() {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 4000,
-        system: PERSONA,
+        system: getPersonaSystemPrompt(personaKey),
         messages: [{
           role: 'user',
           content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: 'image/png', data: currentImageBase64 }
-            },
-            {
-              type: 'text',
-              text: 'This is the "' + screen + '" screen. Review it as Sarah and return your findings as JSON.'
-            }
+            { type: 'image', source: { type: 'base64', media_type: 'image/png', data: currentImageBase64 } },
+            { type: 'text', text: 'This is the "' + screen + '" screen. Review it in character and return your findings as JSON.' }
           ]
         }]
       })
@@ -399,12 +408,9 @@ async function analyze() {
     let findings;
     try {
       let clean = raw.replace(/```json/g, '').replace(/```/g, '').trim();
-      // Extract just the JSON array if there's extra text around it
       const arrStart = clean.indexOf('[');
       const arrEnd = clean.lastIndexOf(']');
-      if (arrStart !== -1 && arrEnd !== -1) {
-        clean = clean.substring(arrStart, arrEnd + 1);
-      }
+      if (arrStart !== -1 && arrEnd !== -1) clean = clean.substring(arrStart, arrEnd + 1);
       findings = JSON.parse(clean);
     } catch(e) {
       output.innerHTML = '<div style="color:var(--red);font-size:12px">Parse error. Raw response:<br><pre style="font-size:11px;color:var(--t2);white-space:pre-wrap">' + raw + '</pre></div>';
@@ -414,8 +420,16 @@ async function analyze() {
     }
 
     screenCount++;
-    findings.forEach(f => { f.screen = screen; allFindings.push(f); });
-    renderOutput(findings, screen);
+    const timestamp = Date.now();
+    findings.forEach(f => {
+      f.screen = screen;
+      f.persona = personaKey;
+      f.personaName = PERSONAS[personaKey].name;
+      f.timestamp = timestamp;
+      allFindings.push(f);
+    });
+    persistFindings();
+    renderOutput(findings, screen, personaKey);
     renderSidebar();
     updateStats();
 
@@ -427,17 +441,34 @@ async function analyze() {
   analyzeBtn.textContent = 'Analyze screen';
 }
 
-function renderOutput(findings, screen) {
+function renderOutput(findings, screen, personaKey, isSavedView) {
+  const cat = { bug:'🐛 Bug', confusion:'❓ Confusion', friction:'⚡ Friction', gap:'🕳 Gap', positive:'✅ Positive' };
   const html = findings.map(f => {
-    const cat = { bug:'🐛 Bug', confusion:'❓ Confusion', friction:'⚡ Friction', gap:'🕳 Gap', positive:'✅ Positive' }[f.category] || f.category;
+    const catLabel = cat[f.category] || f.category;
+    const suggestionHtml = f.suggestion ? `<div class="fb-suggestion">💡 <b>Suggested fix:</b> ${f.suggestion}</div>` : '';
     return `<div class="finding-block ${f.severity}">
-      <div class="fb-type">${f.severity.toUpperCase()} · ${cat}</div>
+      <div class="fb-type">${f.severity.toUpperCase()} · ${catLabel}</div>
       <div class="fb-title">${f.title}</div>
       <div class="fb-detail">${f.detail}</div>
       <div class="fb-reaction">"${f.reaction}"</div>
+      ${suggestionHtml}
     </div>`;
   }).join('');
-  output.innerHTML = `<div style="font-size:11px;color:var(--t3);margin-bottom:10px">Sarah's review of: <strong style="color:var(--t)">${screen}</strong> · ${findings.length} findings</div>` + html;
+
+  const banner = isSavedView
+    ? `<div class="viewing-banner" style="margin-bottom:10px"><span>📁 Viewing saved analysis</span><button onclick="newScreen()">Upload a new screenshot →</button></div>`
+    : '';
+
+  output.innerHTML = banner + `<div style="font-size:11px;color:var(--t3);margin-bottom:10px">${PERSONAS[personaKey].name}'s review of: <strong style="color:var(--t)">${screen}</strong> · ${findings.length} findings</div>` + html;
+}
+
+function viewSavedScreen(screen, personaKey) {
+  const findings = allFindings.filter(f => f.screen === screen && f.persona === personaKey);
+  if (findings.length === 0) return;
+  viewingSavedScreen = { screen, persona: personaKey };
+  previewSection.style.display = 'none';
+  uploadArea.style.display = 'none';
+  renderOutput(findings, screen, personaKey, true);
 }
 
 function renderSidebar() {
@@ -447,13 +478,15 @@ function renderSidebar() {
   }
   const sorted = [...allFindings].sort((a,b) => {
     const order = {critical:0, medium:1, low:2};
-    return (order[a.severity]||3) - (order[b.severity]||3);
+    const sevDiff = (order[a.severity]||3) - (order[b.severity]||3);
+    if (sevDiff !== 0) return sevDiff;
+    return (b.timestamp||0) - (a.timestamp||0);
   });
-  findingsList.innerHTML = sorted.map((f,i) => `
-    <div class="finding sev-${f.severity}">
+  findingsList.innerHTML = sorted.map((f) => `
+    <div class="finding sev-${f.severity}" onclick="viewSavedScreen('${f.screen.replace(/'/g,"\\'")}', '${f.persona}')">
       <div class="finding-sev"><div class="sev-dot"></div><div class="sev-label">${f.severity}</div></div>
       <div class="finding-title">${f.title}</div>
-      <div class="finding-screen">${f.screen}</div>
+      <div class="finding-meta"><span>${f.screen}</span><span>·</span><span>${f.personaName || ''}</span></div>
     </div>`).join('');
 }
 
@@ -464,12 +497,13 @@ function updateStats() {
   exportStats.innerHTML = `<strong>${allFindings.length}</strong> total · <span style="color:var(--red)">${c} critical</span> · <span style="color:var(--yellow)">${m} medium</span> · <span style="color:var(--green)">${l} low</span>`;
 }
 
-function reset() {
+function newScreen() {
+  viewingSavedScreen = null;
   currentImageBase64 = null;
   previewSection.style.display = 'none';
   uploadArea.style.display = 'flex';
   analyzeBtn.disabled = true;
-  output.innerHTML = '<div style="color:var(--t3);font-size:13px">Upload a screenshot and click Analyze. Sarah will review it as a first-time merchant.</div>';
+  output.innerHTML = '<div style="color:var(--t3);font-size:13px">Upload a screenshot and click Analyze. The selected persona will review it. All past analyses are saved automatically — click any item in the sidebar to revisit it.</div>';
   fileInput.value = '';
 }
 
@@ -479,13 +513,13 @@ async function generateSummary() {
   summaryBtn.disabled = true;
   summaryBtn.innerHTML = '<span class="spinner"></span>';
 
-  const findingsText = allFindings.map((f,i) =>
-    `[${f.severity.toUpperCase()}] ${f.title} (${f.screen})\n${f.detail}\nMerchant reaction: "${f.reaction}"`
+  const findingsText = allFindings.map((f) =>
+    `[${f.severity.toUpperCase()}] ${f.title} (${f.screen} — ${f.personaName || ''})\n${f.detail}\nMerchant reaction: "${f.reaction}"\nSuggested fix: ${f.suggestion || 'n/a'}`
   ).join('\n\n');
 
   const prompt = `You are a senior product manager preparing a UX bug report to send to a development team.
 
-Below are raw UX findings from a non-technical merchant testing the Nordyx dashboard (a Shopify storefront management platform). Your job is to turn these into a clean, developer-ready action list.
+Below are raw UX findings from multiple merchant personas testing the Nordyx dashboard (a Shopify storefront management platform). Your job is to turn these into a clean, developer-ready action list.
 
 FINDINGS:
 ${findingsText}
@@ -493,17 +527,17 @@ ${findingsText}
 Write a developer action list with this exact structure:
 
 # Nordyx — UX Issues for Developer
-**Tested by:** Non-technical merchant persona (Sarah M.)
+**Tested by:** Multiple merchant personas
 **Screens reviewed:** ${screenCount}
 **Date:** ${new Date().toLocaleDateString('en-GB')}
 
 ---
 
 ## 🔴 Critical — Fix Before Any User Sees This
-[numbered list of critical issues with exact description of what to fix]
+[numbered list of critical issues, each with the problem AND the suggested fix]
 
 ## 🟡 Medium — Fix Before Launch
-[numbered list of medium issues]
+[numbered list of medium issues, each with the problem AND the suggested fix]
 
 ## 🟢 Low — Fix When Possible
 [numbered list of low/positive items]
@@ -528,7 +562,7 @@ Be specific and actionable. Each item should say exactly what the developer need
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
+        max_tokens: 4000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -555,7 +589,7 @@ function exportReport() {
     const order = {critical:0,medium:1,low:2};
     return (order[a.severity]||3)-(order[b.severity]||3);
   });
-  let md = `# Nordyx UX Testing Report — Sarah Persona\n\n`;
+  let md = `# Nordyx UX Testing Report\n\n`;
   md += `**Screens reviewed:** ${screenCount}\n`;
   md += `**Total findings:** ${allFindings.length}\n`;
   md += `**Critical:** ${allFindings.filter(f=>f.severity==='critical').length}\n`;
@@ -564,9 +598,12 @@ function exportReport() {
   sorted.forEach((f,i) => {
     md += `## ${i+1}. [${f.severity.toUpperCase()}] ${f.title}\n`;
     md += `**Screen:** ${f.screen}\n`;
+    md += `**Persona:** ${f.personaName || ''}\n`;
     md += `**Category:** ${f.category}\n\n`;
     md += `${f.detail}\n\n`;
-    md += `> "${f.reaction}"\n\n---\n\n`;
+    md += `> "${f.reaction}"\n\n`;
+    if (f.suggestion) md += `**💡 Suggested fix:** ${f.suggestion}\n\n`;
+    md += `---\n\n`;
   });
   const blob = new Blob([md], {type:'text/markdown'});
   const a = document.createElement('a');
